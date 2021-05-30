@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <main>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="my-5 d-flex justify-content-center">
+                    <div>
+                        <h1>Create your account</h1>
+                        {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+
+                        {{ form_start(registrationForm) }}
+                        {{ form_row(registrationForm.username) }}
+                        <br>
+{#                        {{ form_row(registrationForm.imageFile) }}#}
+                        <br>
+                        {{ form_row(registrationForm.plainPassword) }}
+                        <br>
+
+                        <button type="submit" class="btn btn-lg btn-outline-warning">Create my account</button>
+                        {{ form_end(registrationForm) }}
+                        <br>
+                        <a href="{{ path('app_login') }}">Already have an account? Log in here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,96 @@
+html,
+body {
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+    height: 100%;
+    width: 100%;
+    background-color: #222222 !important;
+}
+main {
+    height: 100%;
+    width: 100%;
+}
+
+header, main, footer, .bbg {
+    background-color: #222222;
+    color: white;
+}
+/*HEADER*/
+/*Gets rid of the blue outline when clicking buttons*/
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+h3 {
+    color: goldenrod;
+}
+
+/*Settings icon rotation*/
+.crossRotate {
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;
+}
+.crossRotate:hover {
+    -webkit-transform: rotate(80deg);
+    -ms-transform: rotate(80deg);
+    transform: rotate(80deg);
+}
+
+.dropdown-menu, .dropdown-item{
+    background-color: #222222 !important;
+    color: goldenrod !important;
+    padding: 15px;
+}
+/*HEADER END*/
+
+/*MAIN*/
+.table {
+    border-style: solid;
+    border-color: goldenrod !important;
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+    vertical-align: middle;
+
+}
+.wrapper ul{
+    width: 20px;
+}
+
+/*MAIN ADD END*/
+
+/* MODAL */
+.modal-header, .modal-body , a {
+    text-decoration: none;
+    color: goldenrod;
+    background-color: #222222;
+}
+.modal {
+    text-align: center;
+    padding: 0!important;
+    border-radius: 20px;
+}
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+/*MODAL END*/
+
+.btnCancelDelete{
+    margin-left: 50px;
+}

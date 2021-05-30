@@ -1,0 +1,269 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Button trigger modal -->
+    <main class="container-fluid">
+        <div class="row">
+            <div class="my-2 d-flex justify-content-center">
+                <button type="button" class="btn shadow-none" data-toggle="modal" data-target="#formModal">
+                    <img alt="icon add new books" src="{{ asset('img/add-icon.png') }}" width="64px">
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content rounded-5" id=".center">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="formModalLabel">New manga</h5>
+                                <button type="button" class="close btn btn-dark" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% if app.user %}
+                                    <!-- Add a new manga Form-->
+                                    {% form_theme mangaForm 'bootstrap_4_layout.html.twig' %}
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="my-2 d-flex justify-content-center">
+                                                {{ form_start(mangaForm) }}
+                                                <br>
+                                                {{ form_row(mangaForm.title) }}
+                                                <br>
+                                                {{ form_row(mangaForm.status) }}
+                                                <br>
+                                                {{ form_row(mangaForm.rating) }}
+                                                <br>
+                                                {{ form_row(mangaForm.note) }}
+                                                <br>
+{#                                                {{ form_row(mangaForm.imageFile) }}#}
+                                                <div class="mt-5">
+                                                    <button class="btn btn-outline-light" type="reset"
+                                                            data-dismiss="modal">Cancel
+                                                    </button>
+                                                    <button class="btn btn-outline-light" type="submit">Add manga
+                                                    </button>
+                                                </div>
+                                                {{ form_end(mangaForm) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex justify-content-center my-5">
+                                        <a class="btn btn-outline-light " href="{{ path('app_login') }}">Log in to
+                                            add books to your list!</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main - List-->
+        <div class="row">
+            <div class="col-9 mx-auto my-5 d-flex justify-content-center">
+                {# If the list has any manga in it, the table appears #}
+                {% if mangaList|length > 0 %}
+                <div class="table">
+                    <table class="table table-hover table-dark table-striped">
+                        <caption>Manga List</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Note</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Rating</th>
+                        {% for manga in mangaList %}
+                            {% if app.user is same as manga.user %}
+                            <th scope="col">Edit</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+{#                            {% if manga.filename %}#}
+{#                                <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"#}
+{#                                         style="width: 90px; height: auto;"></td>#}
+{#                            {% else %}#}
+                                <td> -</td>
+{#                            {% endif %}#}
+                            <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
+                            <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
+                            <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
+                            <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
+                            {% if app.user is same as manga.user %}
+                                <td>
+                                    <div class="wrapper">
+                                        <div class="btn-group dropend">
+                                            <button type="button"
+                                                    class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="btn btn-outline-warning"
+                                                       data-toggle="modal" data-target="#updateFormModal"
+                                                            {# href="{{ url('manga_update', {'id': manga.id}) }}" #}
+                                                    >Update</a>
+                                                </li>
+                                                <li><span> &nbsp </span></li>
+                                                <li><a class="btn btn-outline-danger btn shadow-none"
+                                                       data-toggle="modal"
+                                                       data-target="#deleteModal">&nbspDelete&nbsp</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <h3>Nothing to show here! Add new mangas by clicking the add button!</h3>
+                    {% endif %}
+                </div>
+            </div>
+            {# Delete modal #}
+            {% for manga in mangaList %}
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content rounded-5" id=".center">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModal">Are you sure you want to
+                                    delete this manga from your list?</h5>
+                                <button type="button" class="close btn btn-dark" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <a class="btn btn-outline-light"
+                                   href="{{ url('manga_delete', {'id': manga.id}) }}">Yes ! </a>
+
+                                <button class="btn btn-outline-light" id="btnCancelDelete" type="reset"
+                                        data-dismiss="modal">Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
+{% block js %}
+    {# <!--Dark mode script --> #}
+    {# <script> #}
+    {# function darkMode() { #}
+    {# var element = document.body; #}
+    {# element.classList.toggle("dark-mode"); #}
+    {# } #}
+    {# </script> #}
+
+    <!--Modal script -->
+    <script>
+        /**
+         * Ce code gère la soumission du formulaire de la modale en ajax
+         */
+
+        //quand on tente de soumettre le formulaire de création de lieu (modale)...
+        $("#mangaForm").on("submit", function (e) {
+            //j'empêche la soumission normale (pour que la page ne se recharge pas)
+            e.preventDefault();
+            //j'envoie les données au serveur en ajax
+            $.ajax({
+                //ne marche que parce que je ne suis pas dans un fichier js externe
+                //url à laquelle je fais ma requête
+                "url": "{{ path('manga_index') }}",
+                //je prend toutes les données du formulaire et je les balance avec ma requête
+                "data": $("#mangaForm").serialize(),
+                //en POST
+                "method": "post"
+            })
+                //sera appelée lorsque la requête est terminée
+                //je reçois la nouvelle "Location" en response, avec son id
+                .done(function (response) {
+                    //je crée une nouvelle balise <option>, ayant pour value l'id du lieu
+                    var option = $("<option>").attr("value", response.manga.id);
+                    //j'injecte le nom du manga en contenu de la balise
+                    option.html(response.manga.name);
+                    //je lui met la propriété selected afin qu'elle soit préselectionnée dans le select
+                    option.prop('selected', true);
+                    //j'ajoute dans le select (au début de la liste)
+                    $("#manga_name").prepend(option);
+                    //je ferme la modale
+                    $('#mangaForm').modal('hide');
+                });
+        });
+    </script>
+
+{% endblock %}
+{# <div class="modal fade" id="updateFormModal" tabindex="-1" role="dialog" aria-labelledby="updateFormModalLabel" #}
+{# aria-hidden="true"> #}
+{# <div class="modal-dialog" role="document"> #}
+{# <div class="modal-content rounded-5" id=".center"> #}
+{# <div class="modal-header"> #}
+{# <h5 class="modal-title" id="updateFormModal">Update manga</h5> #}
+{# <button type="button" class="close btn btn-dark" data-dismiss="modal" #}
+{# aria-label="Close"> #}
+{# <span aria-hidden="true">&times;</span> #}
+{# </button> #}
+{# </div> #}
+{# <div class="modal-body"> #}
+{# {% if app.user %} #}
+
+{# <!-- Form--> #}
+{# {% form_theme mangaUpdateForm 'bootstrap_4_layout.html.twig' %} #}
+{# <div class="container-fluid"> #}
+{# <div class="row"> #}
+{# <div class="my-2 d-flex justify-content-center"> #}
+{# {{ form_start(mangaUpdateForm) }} #}
+{# <br> #}
+{# {{ form_row(mangaUpdateForm.name) }} #}
+{# <br> #}
+{# {{ form_row(mangaUpdateForm.status) }} #}
+{# <br> #}
+{# {{ form_row(mangaUpdateForm.rating) }} #}
+{# <br> #}
+{# {{ form_row(mangaUpdateForm.note) }} #}
+{# <br> #}
+{# {{ form_row(mangaUpdateForm.imageFile) }} #}
+
+{# <div class="mt-5"> #}
+{# <button class="btn btn-outline-light" type="reset" #}
+{# data-dismiss="modal">Cancel #}
+{# </button> #}
+{# <button class="btn btn-outline-light" type="submit"> #}
+{# <a href="{{ url('manga_update', {'id': manga.id}) }}"> #}
+{# Update manga #}
+{# </a> #}
+{# </button> #}
+{# </div> #}
+{# {{ form_end(mangaUpdateForm) }} #}
+{# </div> #}
+{# </div> #}
+{# </div> #}
+{# </div> #}
+{# </div> #}
+{# </div> #}
+{# </div> #}
+{# <!--Modal update script --> #}
+{# <script> #}
+{# $("#mangaUpdateForm").on("submit", function (e) { #}
+{# e.preventDefault(); #}
+{# $.ajax({ #}
+{# "url": "{{ path('manga_index') }}", #}
+{# "data": $("#mangaUpdateForm").serialize(), #}
+{# "method": "post" #}
+{# }) #}
+{# .done(function (response) { #}
+{# var option = $("<option>").attr("value", response.manga.id); #}
+{# $('#mangaUpdateForm').modal('hide'); #}
+{# }); #}
+{# }); #}
+{# </script> #}

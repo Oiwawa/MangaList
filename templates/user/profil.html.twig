@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ user.username }}'s Profile
+{% endblock %}
+{% block body %}
+    <main>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6 mx-auto text-center">
+                    <h1>{{ user.username|capitalize }}</h1>
+{#                    <div class="my-1">#}
+{#                        {{ user.picture }}#}
+{#                    </div>#}
+
+                   <a class="btn btn-outline-light" href="{{ path('manga_index') }}">Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
