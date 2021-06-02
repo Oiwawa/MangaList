@@ -37,7 +37,7 @@
                                                 <br>
                                                 {{ form_row(mangaForm.note) }}
                                                 <br>
-{#                                                {{ form_row(mangaForm.imageFile) }}#}
+                                                {{ form_row(mangaForm.imageFile) }}
                                                 <div class="mt-5">
                                                     <button class="btn btn-outline-light" type="reset"
                                                             data-dismiss="modal">Cancel
@@ -66,35 +66,36 @@
             <div class="col-9 mx-auto my-5 d-flex justify-content-center">
                 {# If the list has any manga in it, the table appears #}
                 {% if mangaList|length > 0 %}
-                <div class="table">
+
+                <div class="table table-responsive">
                     <table class="table table-hover table-dark table-striped">
                         <caption>Manga List</caption>
                         <thead>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Title</th>
-                            <th scope="col">Note</th>
                             <th scope="col">Status</th>
                             <th scope="col">Rating</th>
-                        {% for manga in mangaList %}
-                            {% if app.user is same as manga.user %}
+                            <th scope="col">Note</th>
+                            {% if editAllowed %}
                             <th scope="col">Edit</th>
                             {% endif %}
                         </tr>
                         </thead>
                         <tbody>
+                        {% for manga in mangaList %}
                         <tr>
-{#                            {% if manga.filename %}#}
-{#                                <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"#}
-{#                                         style="width: 90px; height: auto;"></td>#}
-{#                            {% else %}#}
+                            {% if manga.filename %}
+                                <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"
+                                         style="width: 90px; height: auto;"></td>
+                            {% else %}
                                 <td> -</td>
-{#                            {% endif %}#}
+                            {% endif %}
                             <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
-                            <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
                             <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
                             <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
-                            {% if app.user is same as manga.user %}
+                            <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
+                            {% if editAllowed %}
                                 <td>
                                     <div class="wrapper">
                                         <div class="btn-group dropend">
@@ -102,18 +103,19 @@
                                                     class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                             </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="btn btn-outline-warning"
-                                                       data-toggle="modal" data-target="#updateFormModal"
-                                                            {# href="{{ url('manga_update', {'id': manga.id}) }}" #}
+                                            <div id="editMenu" class="dropdown-menu">
+                                                <div>
+                                                    <a class="btn btn-outline-warning"
+                                                             href="{{ url('manga_update', {'id': manga.id}) }}"
                                                     >Update</a>
-                                                </li>
-                                                <li><span> &nbsp </span></li>
-                                                <li><a class="btn btn-outline-danger btn shadow-none"
+                                                </div>
+                                                <div><span> &nbsp </span></div>
+                                                <div>
+                                                    <a class="btn btn-outline-danger btn shadow-none"
                                                        data-toggle="modal"
                                                        data-target="#deleteModal">&nbspDelete&nbsp</a>
-                                                </li>
-                                            </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

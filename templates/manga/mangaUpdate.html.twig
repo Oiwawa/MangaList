@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update Manga {% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('style/styleUpdate.css') }}">
+{% endblock %}
+{% block body %}
+    {% form_theme mangaUpdateForm 'bootstrap_4_layout.html.twig' %}
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="mangaImg d-flex col-2 justify-content-center">
+                    <img alt="{{ manga.title }} image" src="{{ vich_uploader_asset(manga, 'imageFile') }}">
+                </div>
+                <div class="my-2 d-flex col-8 justify-content-center">
+                    {{ form_start(mangaUpdateForm) }}
+                    <br>
+                    {{ form_row(mangaUpdateForm.title) }}
+                    <br>
+                    {{ form_row(mangaUpdateForm.status) }}
+                    <br>
+                    {{ form_row(mangaUpdateForm.rating) }}
+                    <br>
+                    {{ form_row(mangaUpdateForm.note) }}
+                    <br>
+                    {{ form_row(mangaUpdateForm.imageFile) }}
+                    <div class="mt-5">
+                        <button class="btn btn-outline-light" type="reset"
+                                data-dismiss="modal">Cancel
+                        </button>
+                        <button class="btn btn-outline-light" type="submit">Add manga
+                        </button>
+                    </div>
+                    {{ form_end(mangaUpdateForm) }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

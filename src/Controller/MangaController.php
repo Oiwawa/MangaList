@@ -20,6 +20,27 @@ class MangaController extends AbstractController
 {
 
     /**
+     * @Route(path="update/{id}", name="update")
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function update(EntityManagerInterface $entityManager, Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $manga = $entityManager->getRepository('App:Manga')->findOneBy(['id' => $request->get('id')]);
+        $mangaUpdateForm = $this->createForm(MangaType::class, $manga);
+        $mangaUpdateForm->handleRequest($request);
+        if ($mangaUpdateForm->isSubmitted() && $mangaUpdateForm->isValid()) {
+            $entityManager->flush();
+        }
+
+        return $this->render('manga/mangaUpdate.html.twig', [
+            'mangaUpdateForm' => $mangaUpdateForm->createView(),
+            'manga' => $manga
+        ]);
+    }
+
+    /**
      * @Route(path="delete/{id}", name="delete")
      * @param EntityManagerInterface $entityManager
      * @param Request $request
@@ -27,19 +48,13 @@ class MangaController extends AbstractController
      */
     public function delete(EntityManagerInterface $entityManager, Request $request): RedirectResponse
     {
-        $manga = $entityManager->getRepository('App:Manga')->findOneBy(['id' => $request->get('id')]);
+            $manga = $entityManager->getRepository('App:Manga')->findOneBy(['id' => $request->get('id')]);
+            $user = $entityManager->getRepository('App:User')->findOneBy(['username' => $this->getUser()->getUsername()]);
+            $user->removeManga($manga);
+            $entityManager->remove($manga);
+            $entityManager->flush();
+            $this->addFlash('success', '' . $manga->getTitle() . ' has been deleted from your list.');
 
-        if($this->getUser() === $manga->getUser()){
-
-        $user = $entityManager->getRepository('App:User')->findOneBy(['username' => $this->getUser()->getUsername()]);
-        $user->removeManga($manga);
-        $entityManager->remove($manga);
-        $entityManager->flush();
-
-        $this->addFlash('success', '' . $manga->getTitle() . ' has been deleted from your list.');
-        } else {
-            $this->addFlash('warning', 'You can only delete items from your own list.');
-        }
         return $this->redirectToRoute('manga_index');
     }
 }

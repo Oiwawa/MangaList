@@ -36,16 +36,19 @@ class HomeController extends AbstractController
         if (is_null($this->getUser())) {
             $oiwa = $entityManager->getRepository('App:User')->findOneBy(['id' => 1]);
             $mangaList = $oiwa->getMangas();
+            $editAllowed = false;
         } else {
             $manga->setAddedDate(new \DateTime('now'));
             $user = $entityManager->getRepository('App:User')->findOneBy(['username' => $this->getUser()->getUsername()]);
             $user->addManga($manga);
+            $editAllowed = true;
             $mangaForm->handleRequest($request);
             if ($mangaForm->isSubmitted() && $mangaForm->isValid()) {
                 //Adding $manga's data to the database
                 $entityManager->persist($manga);
                 $entityManager->flush();
                 $this->addFlash('success', '' . $manga->getTitle() . ' has been added to the list !');
+                return $this->redirectToRoute('manga_index');
             }
             $user = $this->getUser()->getUsername();
             $mangaList = $entityManager->getRepository('App:Manga')->getMangaUser($user);
@@ -53,7 +56,8 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig',
             [
                 'mangaForm' => $mangaForm->createView(),
-                'mangaList' => $mangaList
+                'mangaList' => $mangaList,
+                'editAllowed' => $editAllowed
             ]);
     }
 }

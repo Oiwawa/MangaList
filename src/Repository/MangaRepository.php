@@ -22,7 +22,7 @@ class MangaRepository extends ServiceEntityRepository
     public function getMangaUser($user){
         $query = $this->createQueryBuilder('manga')
             ->select('manga')
-            ->join('manga.use', 'user')
+            ->join('manga.user', 'user')
             ->where('user.username LIKE :username')
             ->setParameter('username', $user);
 

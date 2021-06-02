@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Manga;
+use App\Entity\Status;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,21 +19,28 @@ class MangaType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Title:*'
+                'label' => 'Title:*',
+                'required' => true
             ])
-            ->add('note', TextType::class, [
-                'label' => 'Note:'
+            ->add('status', EntityType::class, [
+                'label' => 'Status:',
+                'class' => Status::class,
+                'placeholder' => 'Choose a status',
+                'choice_label' => 'status',
+                'expanded'=>false,
+                'multiple'=>false,
             ])
-            ->add('status', TextType::class, [
-                'label' => 'Status:'
+            ->add('note', TextareaType::class, [
+                'label' => 'Note:',
             ])
             ->add('rating', IntegerType::class, [
                 'label' => 'Rating:'
             ])
-//            ->add('imageFile', FileType::class,[
-//                'required'=>false,
-//                'label'=> 'Manga image'
-//            ])
+            ->add('imageFile', FileType::class,[
+                'required'=>false,
+                'label'=> 'Manga image',
+                'attr'=>['onchange="loadFile(event)"'],
+            ])
         ;
     }
 

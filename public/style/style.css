@@ -48,6 +48,10 @@ h3 {
     color: goldenrod !important;
     padding: 15px;
 }
+
+#editMenu{
+    min-width:  0 !important;
+}
 /*HEADER END*/
 
 /*MAIN*/
