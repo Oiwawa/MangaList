@@ -24,10 +24,10 @@ class EditProfileType extends AbstractType
                 'mapped' => false,
 
             ])
-//            ->add('imageFile', FileType::class, [
-//                'required' => false,
-//                'label' => 'User\'s image'
-//            ])
+            ->add('imageFile', FileType::class, [
+                'required' => false,
+                'label' => 'User\'s image'
+            ])
         ;
     }
 
