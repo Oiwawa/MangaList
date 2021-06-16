@@ -43,6 +43,10 @@ h3 {
     transform: rotate(80deg);
 }
 
+.dropdown-menu {
+    box-shadow: 8px 5px 20px 0 #131313;
+}
+
 .dropdown-menu, .dropdown-item{
     background-color: #222222 !important;
     color: goldenrod !important;
@@ -51,7 +55,19 @@ h3 {
 
 #editMenu{
     min-width:  0 !important;
+    border-radius: 10px;
+    padding: 6px 8px;
 }
+
+#updateBtn {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#deleteBtn {
+    text-align: center;
+}
+
 /*HEADER END*/
 
 /*MAIN*/
@@ -66,6 +82,19 @@ h3 {
 }
 .wrapper ul{
     width: 20px;
+}
+
+#manga-image-table {
+    display: flex;
+    margin: 0 auto;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+#editBtn {
+    vertical-align: baseline;
 }
 
 /*MAIN ADD END*/
@@ -97,4 +126,10 @@ h3 {
 
 .btnCancelDelete{
     margin-left: 50px;
+}
+
+.filters{
+    display: none;
+    text-align: center;
+    background-color: red !important;
 }

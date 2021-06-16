@@ -29,10 +29,7 @@ class Manga implements Serializable
      */
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $status;
+
 
     /**
      * @ORM\Column(type="integer")
@@ -45,7 +42,7 @@ class Manga implements Serializable
     private $addedDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $note;
 
@@ -70,6 +67,12 @@ class Manga implements Serializable
      */
     private $updated_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="mangas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $status;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -92,12 +95,12 @@ class Manga implements Serializable
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?Status
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?Status $status): self
     {
         $this->status = $status;
 
@@ -226,4 +229,5 @@ class Manga implements Serializable
     {
         $this->imageFile = base64_decode($this->imageFile);
     }
+
 }

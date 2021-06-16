@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 
+use App\Data\SearchData;
 use App\Entity\Manga;
 use App\Form\MangaType;
+use App\Form\SearchForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,36 +30,46 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //Object creation
-        $manga = new Manga();
-        //Attributes the form to the creation of the object
-        $mangaForm = $this->createForm(MangaType::class, $manga);
         //If the user is not connected, displays the oiwa's list (me, Hi)
         if (is_null($this->getUser())) {
-            $oiwa = $entityManager->getRepository('App:User')->findOneBy(['id' => 1]);
-            $mangaList = $oiwa->getMangas();
-            $editAllowed = false;
+            return $this->redirectToRoute('oiwa_index');
         } else {
-            $manga->setAddedDate(new \DateTime('now'));
+            //Gets the user's id for later use
             $user = $entityManager->getRepository('App:User')->findOneBy(['username' => $this->getUser()->getUsername()]);
+            $username = $user->getUsername();
+//            $mangaList = $entityManager->getRepository('App:Manga')->getMangaUser($user);
+            $mangaList = $user->getMangas();
+            // Filters
+            $data = new SearchData();
+            $filtersForm = $this->createForm(SearchForm::class, $data);
+            $filtersForm->handleRequest($request);
+            if ($filtersForm->isSubmitted() && $filtersForm->isValid()) {
+                if (empty($mangaList)) {
+                    $this->addFlash('danger', 'We did not find any manga corresponding to your research!');
+                }
+            }
+            $mangaList = $entityManager->getRepository('App:Manga')->findSearch($data, $username);
+            // Adding a new manga to the list
+            $manga = new Manga();
+            $mangaForm = $this->createForm(MangaType::class, $manga);
+
+            //Attributes the form to the creation of the object
+            $manga->setAddedDate(new \DateTime('now'));
             $user->addManga($manga);
-            $editAllowed = true;
             $mangaForm->handleRequest($request);
             if ($mangaForm->isSubmitted() && $mangaForm->isValid()) {
-                //Adding $manga's data to the database
+                //Adding new manga to the database if the form is valid
                 $entityManager->persist($manga);
                 $entityManager->flush();
                 $this->addFlash('success', '' . $manga->getTitle() . ' has been added to the list !');
                 return $this->redirectToRoute('manga_index');
             }
-            $user = $this->getUser()->getUsername();
-            $mangaList = $entityManager->getRepository('App:Manga')->getMangaUser($user);
+            return $this->render('home/index.html.twig',
+                [
+                    'mangaForm' => $mangaForm->createView(),
+                    'filtersForm' => $filtersForm->createView(),
+                    'mangaList' => $mangaList,
+                ]);
         }
-        return $this->render('home/index.html.twig',
-            [
-                'mangaForm' => $mangaForm->createView(),
-                'mangaList' => $mangaList,
-                'editAllowed' => $editAllowed
-            ]);
     }
 }

@@ -32,9 +32,11 @@ class MangaType extends AbstractType
             ])
             ->add('note', TextareaType::class, [
                 'label' => 'Note:',
+                'required'=>false
             ])
             ->add('rating', IntegerType::class, [
-                'label' => 'Rating:'
+                'label' => 'Rating:',
+                'required' => false
             ])
             ->add('imageFile', FileType::class,[
                 'required'=>false,

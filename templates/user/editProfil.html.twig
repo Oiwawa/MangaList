@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ user.username }}'s Profile
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset('style/styleUpdate.css') }}">
 {% endblock %}
     {% block body %}
         <main>
@@ -29,8 +30,8 @@
                             </div>
                         {% endfor %}
                     {% endfor %}
-                    <div class="mangaImg d-flex col-2 justify-content-center">
-                        <img alt="{{ user.username }} image" src="{{ vich_uploader_asset(user, 'imageFile') }}">
+                    <div class="manga-image-box d-flex col-2 justify-content-center">
+                        <img id="manga-image-update" alt="{{ user.username }} image" src="{{ vich_uploader_asset(user, 'imageFile') }}">
                     </div>
                     <div class="row d-flex justify-content-center">
                         <div class="col-3 my-5">

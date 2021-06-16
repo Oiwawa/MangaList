@@ -9,10 +9,10 @@
     <main>
         <div class="container-fluid">
             <div class="row">
-                <div class="mangaImg d-flex col-2 justify-content-center">
-                    <img alt="{{ manga.title }} image" src="{{ vich_uploader_asset(manga, 'imageFile') }}">
+                <div class="col manga-image-box d-flex">
+                    <img id="manga-image-update" alt="{{ manga.title }} image" src="{{ vich_uploader_asset(manga, 'imageFile') }}">
                 </div>
-                <div class="my-2 d-flex col-8 justify-content-center">
+                <div class="col d-flex my-2 justify-content-center">
                     {{ form_start(mangaUpdateForm) }}
                     <br>
                     {{ form_row(mangaUpdateForm.title) }}
@@ -25,13 +25,14 @@
                     <br>
                     {{ form_row(mangaUpdateForm.imageFile) }}
                     <div class="mt-5">
-                        <button class="btn btn-outline-light" type="reset"
-                                data-dismiss="modal">Cancel
+                        <button class="btn btn-outline-light" type="submit">Update manga
                         </button>
-                        <button class="btn btn-outline-light" type="submit">Add manga
-                        </button>
+                        <a class="btn btn-outline-light" href="{{ path('manga_index') }}">Cancel
+                        </a>
                     </div>
                     {{ form_end(mangaUpdateForm) }}
+                </div>
+                <div class="col">
                 </div>
             </div>
         </div>

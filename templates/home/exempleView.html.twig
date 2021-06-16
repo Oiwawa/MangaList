@@ -1,0 +1,129 @@
+{% extends 'home/index.html.twig' %}
+
+{% block body %}
+    <main class="container-fluid">
+        <div class="row">
+            <div class="my-2 d-flex justify-content-center">
+                <button type="button" class="btn shadow-none">
+                    <a href="{{ url('stats_index') }}"> <img alt="statistics"
+                                                             src="{{ asset('img/trend.png') }}"
+                                                             width="35px"></a>
+                </button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn shadow-none" data-toggle="modal" data-target="#formModal">
+                    <img alt="icon add new books" src="{{ asset('img/add-icon.png') }}" width="64px">
+                </button>
+                <!-- Filters button-->
+                <button type="button" class="btn shadow-none">
+                    <img alt="filter icon" onclick="showFilters()" src="{{ asset('img/filter-icon64px.png') }}"
+                         width="35px">
+                </button>
+
+            </div>
+        </div>
+        <!-- FILTERS -->
+        <div id="filters" class="row" style="display: none;">
+            <div class="my-2 d-flex justify-content-center">
+                {{ form_start(filtersForm) }}
+                {{ form_row(filtersForm.q) }}
+                <br>
+                {{ form_row(filtersForm.status) }}
+                <br>
+                {{ form_row(filtersForm.rating) }}
+                <br>
+                <button type="submit" class="btn btn-outline-light">Search</button>
+                <button type="reset"
+                        onclick="resetFilters()"
+                        class="btn btn-dark">
+                    <img alt="reset filters" src="{{ asset('img/icons8-reset-24.png') }}">
+                </button>
+                {{ form_end(filtersForm) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9 mx-auto my-5 d-flex justify-content-center">
+                {# If the list has any manga in it, the table appears #}
+                {% if mangaList|length > 0 %}
+                    <div class="table table-responsive">
+                        <table class="table table-hover table-dark table-striped">
+                            <caption>Manga List</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Note</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for manga in mangaList %}
+                            <tr>
+                                {% if manga.filename %}
+                                    <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"
+                                             id="manga-image-table" style="width: 90px; height: auto;"></td>
+                                {% else %}
+                                    <td> -</td>
+                                {% endif %}
+                                <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
+                                <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
+                                <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
+                                <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <h3>Nothing to show here! Add new mangas by clicking the add button!</h3>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-5" id=".center">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="formModalLabel">Want to create your list?</h5>
+                            <button type="button" class="close btn btn-dark" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add a new manga Form-->
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="d-flex justify-content-center my-5">
+                                        <a class="btn btn-outline-light " href="{{ path('app_login') }}">Log in to
+                                            add books to your list!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block js %}
+    <!--Show filters -->
+    <script>
+        function showFilters() {
+            let filters = document.getElementById("filters");
+            if (filters.style.display === "none") {
+                filters.style.display = "block";
+            } else {
+                filters.style.display = "none";
+            }
+        }
+
+        function resetFilters(){
+            document.getElementById("filters").reset();
+        }
+    </script>
+{% endblock %}
+

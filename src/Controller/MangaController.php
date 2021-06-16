@@ -32,6 +32,7 @@ class MangaController extends AbstractController
         $mangaUpdateForm->handleRequest($request);
         if ($mangaUpdateForm->isSubmitted() && $mangaUpdateForm->isValid()) {
             $entityManager->flush();
+            $this->redirectToRoute('manga_index');
         }
 
         return $this->render('manga/mangaUpdate.html.twig', [

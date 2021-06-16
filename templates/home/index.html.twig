@@ -1,60 +1,88 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!-- Button trigger modal -->
     <main class="container-fluid">
         <div class="row">
             <div class="my-2 d-flex justify-content-center">
+                <button type="button" class="btn shadow-none">
+                    <a href="{{ url('stats_index') }}"> <img alt="statistics icon"
+                                                             src="{{ asset('img/statistics-icon.png') }}"
+                                                             width="35px"></a>
+                </button>
+                <!-- Button trigger modal -->
                 <button type="button" class="btn shadow-none" data-toggle="modal" data-target="#formModal">
                     <img alt="icon add new books" src="{{ asset('img/add-icon.png') }}" width="64px">
                 </button>
-                <!-- Modal -->
-                <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content rounded-5" id=".center">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="formModalLabel">New manga</h5>
-                                <button type="button" class="close btn btn-dark" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                {% if app.user %}
-                                    <!-- Add a new manga Form-->
-                                    {% form_theme mangaForm 'bootstrap_4_layout.html.twig' %}
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="my-2 d-flex justify-content-center">
-                                                {{ form_start(mangaForm) }}
-                                                <br>
-                                                {{ form_row(mangaForm.title) }}
-                                                <br>
-                                                {{ form_row(mangaForm.status) }}
-                                                <br>
-                                                {{ form_row(mangaForm.rating) }}
-                                                <br>
-                                                {{ form_row(mangaForm.note) }}
-                                                <br>
-                                                {{ form_row(mangaForm.imageFile) }}
-                                                <div class="mt-5">
-                                                    <button class="btn btn-outline-light" type="reset"
-                                                            data-dismiss="modal">Cancel
-                                                    </button>
-                                                    <button class="btn btn-outline-light" type="submit">Add manga
-                                                    </button>
-                                                </div>
-                                                {{ form_end(mangaForm) }}
-                                            </div>
+                <!-- Filters button-->
+                <button type="button" class="btn shadow-none">
+                    <img alt="filter icon" onclick="showFilters()" src="{{ asset('img/filter-icon64px.png') }}"
+                         width="35px">
+                </button>
+
+            </div>
+        </div>
+        <!-- Filters -->
+        <div id="filters" class="row" style="display: none;">
+            <div class="my-2 d-flex justify-content-center">
+                {{ form_start(filtersForm) }}
+                {{ form_row(filtersForm.q) }}
+                <br>
+                {{ form_row(filtersForm.status) }}
+                <br>
+                {{ form_row(filtersForm.rating) }}
+                <br>
+                <button type="submit" class="btn btn-outline-light">Search</button>
+                <button type="reset"
+                        title="Reset"
+                        onclick="resetFilters()"
+                        class="btn btn-dark">
+                    <img alt="reset filters" src="{{ asset('img/icons8-reset-24.png') }}">
+                </button>
+                {{ form_end(filtersForm) }}
+            </div>
+        </div>
+        <!-- Add manga Modal -->
+        <div class="row">
+            <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-5" id=".center">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="formModalLabel">New manga</h5>
+                            <button type="button" class="close btn btn-dark" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add a new manga Form-->
+                            {% form_theme mangaForm 'bootstrap_4_layout.html.twig' %}
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="my-2 d-flex justify-content-center">
+                                        {{ form_start(mangaForm) }}
+                                        <br>
+                                        {{ form_row(mangaForm.title) }}
+                                        <br>
+                                        {{ form_row(mangaForm.status) }}
+                                        <br>
+                                        {{ form_row(mangaForm.rating) }}
+                                        <br>
+                                        {{ form_row(mangaForm.note) }}
+                                        <br>
+                                        {{ form_row(mangaForm.imageFile) }}
+                                        <div class="mt-5">
+                                            <button class="btn btn-outline-light" type="reset"
+                                                    onclick="resetFilters()"
+                                                    data-dismiss="modal">Cancel
+                                            </button>
+                                            <button class="btn btn-outline-light"
+                                                    type="submit">Add manga
+                                            </button>
                                         </div>
+                                        {{ form_end(mangaForm) }}
                                     </div>
-                                {% else %}
-                                    <div class="d-flex justify-content-center my-5">
-                                        <a class="btn btn-outline-light " href="{{ path('app_login') }}">Log in to
-                                            add books to your list!</a>
-                                    </div>
-                                {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,51 +94,46 @@
             <div class="col-9 mx-auto my-5 d-flex justify-content-center">
                 {# If the list has any manga in it, the table appears #}
                 {% if mangaList|length > 0 %}
-
-                <div class="table table-responsive">
-                    <table class="table table-hover table-dark table-striped">
-                        <caption>Manga List</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Rating</th>
-                            <th scope="col">Note</th>
-                            {% if editAllowed %}
-                            <th scope="col">Edit</th>
-                            {% endif %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for manga in mangaList %}
-                        <tr>
-                            {% if manga.filename %}
-                                <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"
-                                         style="width: 90px; height: auto;"></td>
-                            {% else %}
-                                <td> -</td>
-                            {% endif %}
-                            <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
-                            <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
-                            <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
-                            <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
-                            {% if editAllowed %}
-                                <td>
+                    <div class="table table-responsive">
+                        <table class="table table-hover table-dark table-striped">
+                            <caption>Manga List</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for manga in mangaList %}
+                            <tr>
+                                {% if manga.filename %}
+                                    <td><img src="{{ vich_uploader_asset(manga, 'imageFile') }}" alt="manga-image"
+                                             id="manga-image-table" style="width: 90px; height: auto;"></td>
+                                {% else %}
+                                    <td> -</td>
+                                {% endif %}
+                                <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
+                                <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
+                                <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
+                                <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
+                                <td id="editBtn">
                                     <div class="wrapper">
-                                        <div class="btn-group dropend">
+                                        <div class="btn-group dropstart">
                                             <button type="button"
                                                     class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                             </button>
                                             <div id="editMenu" class="dropdown-menu">
-                                                <div>
+                                                <div id="updateBtn">
                                                     <a class="btn btn-outline-warning"
-                                                             href="{{ url('manga_update', {'id': manga.id}) }}"
+                                                       href="{{ url('manga_update', {'id': manga.id}) }}"
                                                     >Update</a>
                                                 </div>
-                                                <div><span> &nbsp </span></div>
-                                                <div>
+                                                <div id="deleteBtn">
                                                     <a class="btn btn-outline-danger btn shadow-none"
                                                        data-toggle="modal"
                                                        data-target="#deleteModal">&nbspDelete&nbsp</a>
@@ -119,43 +142,41 @@
                                         </div>
                                     </div>
                                 </td>
-                            {% endif %}
-                            {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
-                    {% else %}
-                        <h3>Nothing to show here! Add new mangas by clicking the add button!</h3>
-                    {% endif %}
-                </div>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <h3>Nothing to show here! Add new mangas by clicking the add button!</h3>
+                {% endif %}
             </div>
-            {# Delete modal #}
-            {% for manga in mangaList %}
-                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content rounded-5" id=".center">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModal">Are you sure you want to
-                                    delete this manga from your list?</h5>
-                                <button type="button" class="close btn btn-dark" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <a class="btn btn-outline-light"
-                                   href="{{ url('manga_delete', {'id': manga.id}) }}">Yes ! </a>
-
-                                <button class="btn btn-outline-light" id="btnCancelDelete" type="reset"
-                                        data-dismiss="modal">Cancel
-                                </button>
-                            </div>
+        </div>
+        {# Delete modal #}
+        {% for manga in mangaList %}
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-5" id=".center">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModal">Are you sure you want to
+                                delete this manga from your list?</h5>
+                            <button type="button" class="close btn btn-dark" data-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <a class="btn btn-outline-light"
+                               href="{{ url('manga_delete', {'id': manga.id}) }}">Yes ! </a>
+                            <button class="btn btn-outline-light" id="btnCancelDelete" type="reset"
+                                    data-dismiss="modal">Cancel
+                            </button>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </main>
 {% endblock %}
 {% block js %}
@@ -166,7 +187,20 @@
     {# element.classList.toggle("dark-mode"); #}
     {# } #}
     {# </script> #}
-
+    <!--Show filters -->
+    <script>
+        function showFilters() {
+            let filters = document.getElementById("filters");
+            if (filters.style.display === "none") {
+                filters.style.display = "block";
+            } else {
+                filters.style.display = "none";
+            }
+        }
+        function resetFilters(){
+            document.getElementById("filters").reset();
+        }
+    </script>
     <!--Modal script -->
     <script>
         /**
