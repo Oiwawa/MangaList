@@ -21,9 +21,9 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route(path="status", name="status")
      */
     public function manageStatus(Request $request, EntityManagerInterface $entityManager): Response

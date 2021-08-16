@@ -61,4 +61,15 @@ class MangaRepository extends ServiceEntityRepository
         }
         return $query->getQuery()->getResult();
     }
+
+
+    public function findHighestMangas(){
+        $highestRankedManga = [];
+
+        $query = $this->createQueryBuilder('manga')
+            ->select('manga')
+            ->where('manga.rating' >=7);
+
+        return $highestRankedManga;
+    }
 }

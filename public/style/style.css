@@ -72,13 +72,12 @@ h3 {
 
 /*MAIN*/
 .table {
-    border-style: solid;
+    border-style: ridge;
     border-color: goldenrod !important;
     border-radius: 20px;
     padding: 20px;
     position: relative;
     vertical-align: middle;
-
 }
 .wrapper ul{
     width: 20px;
@@ -91,6 +90,7 @@ h3 {
 
 .table td {
     vertical-align: middle;
+    font-size: 1.5em !important;
 }
 
 #editBtn {
@@ -132,4 +132,11 @@ h3 {
     display: none;
     text-align: center;
     background-color: red !important;
+}
+
+.mnote {
+    max-width: 150px!important;
+
+    word-wrap: break-word;
+
 }

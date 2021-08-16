@@ -118,8 +118,8 @@
                                 {% endif %}
                                 <td colspan="col-5" class="mname">{{ manga.title|capitalize }}</td>
                                 <td colspan="col-2" class="mstatus">{{ manga.status|capitalize }}</td>
-                                <td colspan="col-2" class="mrating">{{ manga.rating }}/10</td>
-                                <td colspan="col-5" class="mnote">{{ manga.note|capitalize }}</td>
+                                <td colspan="col-2" class="mrating">{{ manga.rating|round(1, 'floor') }}/10</td>
+                                <td colspan="col-5" class="mnote" id="mnote">{{ manga.note|capitalize }}</td>
                                 <td id="editBtn">
                                     <div class="wrapper">
                                         <div class="btn-group dropstart">
@@ -134,9 +134,9 @@
                                                     >Update</a>
                                                 </div>
                                                 <div id="deleteBtn">
-                                                    <a class="btn btn-outline-danger btn shadow-none"
-                                                       data-toggle="modal"
-                                                       data-target="#deleteModal">&nbspDelete&nbsp</a>
+                                                    <a class="btn btn-outline-danger"
+                                                       href="{{ url('manga_delete', {'id': manga.id}) }}"
+                                                      >Delete</a>
                                                 </div>
                                             </div>
                                         </div>

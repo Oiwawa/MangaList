@@ -1,4 +1,21 @@
 {
+    "api-platform/api-pack": {
+        "version": "v1.3.0"
+    },
+    "api-platform/core": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
+        },
+        "files": [
+            "./config/packages/api_platform.yaml",
+            "./config/routes/api_platform.yaml",
+            "./src/Entity/.gitignore"
+        ]
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.2"
     },
@@ -82,8 +99,26 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "fabpot/goutte": {
+        "version": "v3.3.1"
+    },
+    "fig/link-util": {
+        "version": "1.1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
+    },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.5"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.8.2"
+    },
+    "jikan-me/jikan": {
+        "version": "v2.16.23"
     },
     "jms/metadata": {
         "version": "2.5.0"
@@ -91,17 +126,32 @@
     "laminas/laminas-code": {
         "version": "4.3.0"
     },
-    "laminas/laminas-eventmanager": {
-        "version": "3.3.1"
-    },
-    "laminas/laminas-zendframework-bridge": {
-        "version": "1.2.0"
-    },
     "monolog/monolog": {
         "version": "1.26.1"
     },
+    "nelmio/cors-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "./config/packages/nelmio_cors.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.10.5"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.2.2"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.4.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -109,8 +159,17 @@
     "psr/container": {
         "version": "1.1.1"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
+    "psr/link": {
+        "version": "1.0.0"
+    },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -139,6 +198,9 @@
     "symfony/asset": {
         "version": "v4.4.22"
     },
+    "symfony/browser-kit": {
+        "version": "v4.4.27"
+    },
     "symfony/cache": {
         "version": "v4.4.24"
     },
@@ -160,6 +222,9 @@
             "./bin/console",
             "./config/bootstrap.php"
         ]
+    },
+    "symfony/css-selector": {
+        "version": "v4.4.27"
     },
     "symfony/debug": {
         "version": "v4.4.22"
@@ -188,6 +253,9 @@
     "symfony/doctrine-bridge": {
         "version": "v4.4.24"
     },
+    "symfony/dom-crawler": {
+        "version": "v4.4.27"
+    },
     "symfony/dotenv": {
         "version": "v4.4.20"
     },
@@ -199,6 +267,9 @@
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v1.1.9"
+    },
+    "symfony/expression-language": {
+        "version": "v4.4.25"
     },
     "symfony/filesystem": {
         "version": "v4.4.22"
@@ -326,6 +397,9 @@
     "symfony/property-access": {
         "version": "v4.4.20"
     },
+    "symfony/property-info": {
+        "version": "v4.4.25"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.24"
     },
@@ -375,6 +449,12 @@
     },
     "symfony/security-http": {
         "version": "v4.4.24"
+    },
+    "symfony/serializer": {
+        "version": "v4.4.26"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.4"
     },
     "symfony/service-contracts": {
         "version": "v2.4.0"
@@ -427,6 +507,9 @@
     "symfony/var-exporter": {
         "version": "v4.4.23"
     },
+    "symfony/web-link": {
+        "version": "v4.4.26"
+    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -461,5 +544,11 @@
         "files": [
             "./config/packages/vich_uploader.yaml"
         ]
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
+    },
+    "willdurand/negotiation": {
+        "version": "3.0.0"
     }
 }

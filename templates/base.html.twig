@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Oiwa's Bookshelf{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('style/style.css') }}">
     {% block stylesheet %}{% endblock %}
+    <link rel="stylesheet" href="{{ asset('style/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
           crossorigin="anonymous">
@@ -53,8 +53,6 @@
                              class="crossRotate">
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {# <!--Darkmode Switch --> #}
-                        {# <button onclick="darkMode()" class="btn btn-primary switch">Switch Light/Dark</button> #}
                         {% if app.user %}
                             <a class="dropdown-item btn-outline-dark" href="{{ path('user_edit',{"username":app.user.username}) }}">Profile</a>
                             <a class="dropdown-item btn-outline-dark" href="{{ path('app_logout') }}">Log out</a>
@@ -62,6 +60,7 @@
                             <a class="dropdown-item btn-outline-dark" href="{{ path('app_login') }}">Log in</a>
                             <a class="dropdown-item btn-outline-dark" href="{{ path('app_register') }}">Sign in</a>
                         {% endif %}
+                            <a class="dropdown-item btn-outline-dark" href="{{ path('manga_aboutMe') }}">About MangaList</a>
                     </div>
                 </div>
             </div>
@@ -96,6 +95,8 @@
         </a>
         MangaList by Oiwa </p>
 </footer>
-{% block js %}{% endblock %}
+{% block js %}
+
+{% endblock %}
 </body>
 </html>

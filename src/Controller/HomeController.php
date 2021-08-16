@@ -72,4 +72,14 @@ class HomeController extends AbstractController
                 ]);
         }
     }
+
+
+    /**
+     * @return Response
+     * @Route(path="aboutMe", name="aboutMe")
+     */
+    public function aboutMe(): Response
+    {
+        return $this->render('home/aboutMe.html.twig');
+    }
 }

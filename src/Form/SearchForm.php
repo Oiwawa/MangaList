@@ -19,14 +19,14 @@ class SearchForm extends AbstractType
     {
         $builder
             ->add('q', TextType::class, [
-                'label' => false,
+                'label' => "Title :",
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Search'
                 ]
             ])
             ->add('status', EntityType::class, [
-                'label' => false,
+                'label' => "Status :",
                 'required' => false,
                 'class' => Status::class,
                 'expanded' => false,
@@ -34,7 +34,7 @@ class SearchForm extends AbstractType
                 'placeholder' => 'Select status'
             ])
             ->add('rating', NumberType::class, [
-                'label' => false,
+                'label' => "Rating :",
                 'required' => false,
                 'attr' => [
                     'min' => '0',
