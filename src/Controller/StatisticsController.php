@@ -19,14 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class StatisticsController extends AbstractController
 {
-
     /**
      * @Route(path="", name="index")
      */
-    public function statistics(): Response
+    public function statistics(EntityManagerInterface $entityManager): Response
     {
 
-    $highestRankedManga = $this->getHighestRankMangas();
+    $highestRankedManga = $this->getHighestRankMangas($entityManager);
 
        return $this->render("manga/statistics.html.twig",
        [
